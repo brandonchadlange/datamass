@@ -1,82 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-const NetworkBackground = () => {
-  // Create a static grid of points
-  const points = Array.from({ length: 30 }, (_, i) => ({
-    x: (i % 6) * 20 + Math.random() * 10,
-    y: Math.floor(i / 6) * 20 + Math.random() * 10,
-  }));
-
-  return (
-    <div className="absolute inset-0 overflow-hidden">
-      <svg
-        className="absolute w-full h-full opacity-40"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="rgba(59,130,246,0)" />
-            <stop offset="50%" stopColor="rgba(59,130,246,0.6)" />
-            <stop offset="100%" stopColor="rgba(59,130,246,0)" />
-          </linearGradient>
-
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
-            <feMerge>
-              <feMergeNode in="coloredBlur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-
-        {/* Static connection lines */}
-        {points.map((point1, i) =>
-          points.slice(i + 1).map((point2, j) => {
-            const dx = Math.abs(point1.x - point2.x);
-            const dy = Math.abs(point1.y - point2.y);
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < 35) {
-              return (
-                <line
-                  key={`${i}-${j}`}
-                  x1={`${point1.x}%`}
-                  y1={`${point1.y}%`}
-                  x2={`${point2.x}%`}
-                  y2={`${point2.y}%`}
-                  stroke="url(#lineGradient)"
-                  strokeWidth={2}
-                  strokeOpacity={1 - distance / 35}
-                  filter="url(#glow)"
-                />
-              );
-            }
-            return null;
-          })
-        )}
-
-        {/* Static points */}
-        {points.map((point, i) => (
-          <circle
-            key={i}
-            cx={`${point.x}%`}
-            cy={`${point.y}%`}
-            r="3"
-            fill="rgba(59,130,246,0.8)"
-            filter="url(#glow)"
-          />
-        ))}
-      </svg>
-    </div>
-  );
-};
+import AnimatedBackground from "./AnimatedBackground";
 
 export default function Hero() {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-blue-950 via-blue-900 to-blue-800">
-      <NetworkBackground />
+      {/* Background with reduced opacity */}
+      <div className="absolute inset-0 opacity-30">
+        <AnimatedBackground />
+      </div>
 
       <div className="relative pt-32 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
